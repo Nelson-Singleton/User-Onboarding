@@ -9,7 +9,8 @@ const Form = props => {
 
 //prevent page refresh on form submission************************************************************    
 const onSubmit = evt => {
-    evt.preventdefault()
+    
+    evt.preventDefault()
     submit()
 }
 
@@ -26,27 +27,37 @@ const onInputChange = evt => {
 }
 
     return(
+        
 <div>
-    <form onSubmit={onSubmit}>
+    <form onSubmit= {onSubmit}>
+        
+        
+
+        <div>          
+          <div>{formErrors.username}</div>
+          <div>{formErrors.email}</div>         
+          
+        </div>
+
         <label>
             Name: 
-            <input type = "text" name= "name"/>
+            <input type = "text" name= "name" onChange = {onInputChange} value = {formValues.name}/>
         </label>
         <label>
             Email: 
-            <input type = "text" name= "email"/>
+            <input type = "text" name= "email" onChange = {onInputChange} value = {formValues.email}/>
         </label>
         <label>
             Password: 
-            <input type = "text" name= "password"/>
+            <input type = "text" name= "password" onChange = {onInputChange} value = {formValues.password}/>
         </label>
         <br></br>
-        <label> Do you agree to the terms and conditions? Check box if so.
-            <input
-            type = "checkbox"
-            name = "terms"
-            />
+        <label>
+            Do you accept the terms?
+            <input type = "checkbox" name = "terms" checked = {formValues.terms} onChange = {onCheckboxChange}/>
         </label>
+
+        
         <br></br>
         <button>Submit</button>
     </form>

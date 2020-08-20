@@ -6,9 +6,9 @@ import Form from './Form'
 
   //initial variables *******************************************************
   const initialFormValues = {
-    name: "name",
-    email: "email",
-    password: "password",
+    name: "",
+    email: "",
+    password: "",
     terms: false,
   }
 
@@ -39,7 +39,7 @@ const postNewUser = newUser => {
       setUserList([...userList, res.data])
     })
     .catch(err => {
-      debugger
+      
     })
     .finally(() => {
       setFormValues(initialFormValues)
@@ -49,6 +49,7 @@ const postNewUser = newUser => {
 //function where the checkbox changes the state of the entire form.************************************************************ 
 
 const checkboxChange = (name, isChecked) => {
+  
 
   setFormValues({...formValues,
      terms: {
@@ -59,6 +60,7 @@ const checkboxChange = (name, isChecked) => {
 }
 //function to submit form data to a variable, and send variable data as a post request *********************************************************************
 const submit = () => {
+  
   const newUser = {
     username: formValues.name,
     email: formValues.email,
@@ -71,6 +73,7 @@ const submit = () => {
 
 //schema************************************************************************
 const formSchema = yup.object().shape({
+  
   name: yup
   .string()  
   .required('Username is Required'),
@@ -113,6 +116,7 @@ const inputChange = (name, value) => {
   setFormValues({
     ...formValues,
     [name]: value // NOT AN ARRAY
+    
   })
 }
 
@@ -130,7 +134,8 @@ return(
   checkboxChange= {checkboxChange}
   submit= {submit}
   />
-  <h2>New Users</h2>
+  {/* {userList.map(user =>{return (<User key={user.id} details={user}/> ) }) } */}
+  
   
 </div>
 
