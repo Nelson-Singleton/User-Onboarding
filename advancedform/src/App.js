@@ -60,8 +60,8 @@ const checkboxChange = (name, isChecked) => {
 //function to submit form data to a variable, and send variable data as a post request *********************************************************************
 const submit = () => {
   const newUser = {
-    username: formValues.name.trim(),
-    email: formValues.email.trim(),
+    username: formValues.name,
+    email: formValues.email,
     password: formValues.password,
     
     terms: Object.keys(formValues.terms).filter(term => formValues.terms[term]),
@@ -69,7 +69,52 @@ const submit = () => {
     postNewUser(newUser)
 }
 
-//use effect hooks
+//schema************************************************************************
+const formSchema = yup.object().shape({
+  name: yup
+  .string()  
+  .required('Username is Required'),
+
+  email: yup
+  .string()
+  .email('Must be a valid email address')
+  .required('E-mail address is required'),
+
+  password: yup
+    .string()
+    .min(6, 'Password must be at least 6 characters long')
+    .required('A password is required'),
+
+})
+
+//validation************************************************************************
+const inputChange = (name, value) => {
+ 
+  yup
+    .reach(formSchema, name)
+    //we can then run validate using the value
+    .validate(value)
+    // if the validation is successful, we can clear the error message
+    .then(valid => {
+      setFormErrors({
+        ...formErrors,
+        [name]: "",
+      })
+    })
+    /* if the validation is unsuccessful, we can set the error message to the message 
+      returned from yup (that we created in our schema) */
+    .catch(err => {
+      setFormErrors({
+        ...formErrors,
+        [name]: err.errors[0],
+      })
+    })
+
+  setFormValues({
+    ...formValues,
+    [name]: value // NOT AN ARRAY
+  })
+}
 
 
 
@@ -81,12 +126,12 @@ return(
   formErrors = {formErrors}
   userList = {userList}
 
-  // inputChange= {inputChange}
-  // checkboxChange= {checkboxChange}
-  // submit= {submit}
+  inputChange= {inputChange}
+  checkboxChange= {checkboxChange}
+  submit= {submit}
   />
   <h2>New Users</h2>
-  <userList />
+  
 </div>
 
   );
