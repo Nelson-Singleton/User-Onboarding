@@ -89,16 +89,48 @@ const checkboxChange = (name, isChecked) => {
 
 //submit button function
 const submit = () => {
-  const newFriend = {
+  const newSignUp = {
     name: formData.username.trim(),
     email: formData.email.trim(),
     password: formData.role,
-    // 🔥 STEP 8- WHAT ABOUT HOBBIES?
+    
     termsOfService: Object.keys(formData.termsOfService).filter(terms => formData.termsOfService[terms]),
   }
-  // 🔥 STEP 9- POST NEW FRIEND USING HELPER
-  postNewFriend(newFriend)
+  
+  postNewSignUp(newSignUp)
 }
+
+//updates state on formData
+useEffect(() => {
+  
+  formSchema.isValid(formData)
+    .then(valid => {
+      setDisabled(!valid);
+    })
+}, [formData])
+
+//validation
+const inputChange = (name, value) => {
+  
+  yup
+    .reach(formSchema, name)
+    
+    .validate(value)
+    
+    .then(valid => {
+      setErrors({
+        ...errors,
+        [name]: "",
+      })
+    })
+    
+    .catch(err => {
+      setErrors({
+        ...errors,
+        [name]: err.errors[0],
+      })
+    })
+  }
 
 return(
   <div>
@@ -122,7 +154,8 @@ return(
           type="checkbox"
           checked={false}
           onChange />
-      </label>
+      </label><br></br>
+      <button>Submit</button>
     </form>
   </div>
 )
