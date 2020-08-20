@@ -1,9 +1,23 @@
 import React from 'react';
 import './App.css';
 import * as yup from 'yup'
+import App from './App'
 
 
-function Form(){
+const Form = props => {
+    const { formValues, userList, formErrors, disabled, inputChange, checkboxChange, submit } = props;
+
+//prevent page refresh on form submission    
+const onSubmit = evt => {
+    evt.preventdefault()
+    submit()
+}
+
+//update state when checkbox is clicked
+const onCheckboxChange = evt => {
+    const { name, checked } = evt.target
+    checkboxChange(name, checked)
+  }
 
     return(
 <div>
