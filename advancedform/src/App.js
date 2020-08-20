@@ -4,7 +4,16 @@ import axios from 'axios'
 import * as yup from 'yup'
 import Form from './Form'
 
-  //initial variables *******************************************************
+// Program flow to the best of my knowledge.
+// 1. Data is entered into the form. As data is entered, one slice of state updates.
+// 2. It's validated and sent to state. If it passes the error is hidden, otherwise an error is displayed.
+// 3. Submit button is hidden until validation checks all pass- including the checkbox.
+// 4. Submit button is pressed
+// 5. Data is put into an object, and is sent as a post request
+// 6. Response is received from server - Response is placed into state
+// 7. Response is rendered from state and displayed on the page.
+
+//initial variables *******************************************************
   const initialFormValues = {
     name: "",
     email: "",
@@ -37,6 +46,8 @@ const postNewUser = newUser => {
     .then(res => {
       
       setUserList([...userList, res.data])
+      console.log(res.data)
+      
     })
     .catch(err => {
       
@@ -44,6 +55,7 @@ const postNewUser = newUser => {
     .finally(() => {
       setFormValues(initialFormValues)
     })
+    
 }
 
 //function where the checkbox changes the state of the entire form.************************************************************ 
@@ -68,6 +80,7 @@ const submit = () => {
     
     terms: Object.keys(formValues.terms).filter(term => formValues.terms[term]),
   }
+    
     postNewUser(newUser)
 }
 
@@ -121,6 +134,15 @@ const inputChange = (name, value) => {
 }
 
 
+useEffect(() => {
+  
+  formSchema.isValid(formValues)
+    .then(valid => {
+      setDisabled(!valid);
+    })
+}, [formValues])
+
+
 
 return(
 <div>
@@ -134,7 +156,19 @@ return(
   checkboxChange= {checkboxChange}
   submit= {submit}
   />
-  {/* {userList.map(user =>{return (<User key={user.id} details={user}/> ) }) } */}
+<h3> Recent Signups with passwords visible in plaintext </h3>
+{
+  userList.map(user => {
+          return (
+            <pre key={user.id}>
+              <h6>
+              {JSON.stringify(user) }
+              </h6>
+            </pre>
+            
+          )
+  })
+}
   
   
 </div>

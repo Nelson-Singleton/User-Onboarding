@@ -34,8 +34,9 @@ const onInputChange = evt => {
         
 
         <div>          
-          <div>{formErrors.username}</div>
-          <div>{formErrors.email}</div>         
+          <div>{formErrors.name}</div>
+          <div>{formErrors.email}</div> 
+          <div>{formErrors.password}</div>           
           
         </div>
 
@@ -59,7 +60,7 @@ const onInputChange = evt => {
 
         
         <br></br>
-        <button>Submit</button>
+        <button disabled={disabled}>submit</button>
     </form>
 </div>
 
